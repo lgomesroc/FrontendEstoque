@@ -1,37 +1,37 @@
+// src/components/UserForm.tsx
 import React, { useState } from 'react';
-import api from '../services/api';
 
-const UserForm: React.FC = () => {
-  const [nome, setNome] = useState('');
+interface UserFormProps {
+  onAddUser: (user: { name: string; email: string; password: string }) => void;
+}
+
+const UserForm: React.FC<UserFormProps> = ({ onAddUser }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const user = { nome, email, senha };
-
-    await api.post('/users', user);
-
-    setNome('');
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!name || !email || !password) {
+      setError('Todos os campos são obrigatórios.');
+      return;
+    }
+    const newUser = { name, email, password };
+    onAddUser(newUser);
+    setName('');
     setEmail('');
-    setSenha('');
+    setPassword('');
+    setError('');
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>Nome:</label>
-        <input type="text" value={nome} onChange={e => setNome(e.target.value)} required />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-      </div>
-      <div>
-        <label>Senha:</label>
-        <input type="password" value={senha} onChange={e => setSenha(e.target.value)} required />
-      </div>
+      <h2>Cadastrar Usuário</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <input type="text" placeholder="Nome" value={name} onChange={(e) => setName(e.target.value)} required />
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} required />
       <button type="submit">Adicionar Usuário</button>
     </form>
   );

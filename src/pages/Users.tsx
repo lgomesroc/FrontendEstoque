@@ -1,13 +1,15 @@
 import React from 'react';
-import UserList from '../components/UserList';
 import UserForm from '../components/UserForm';
 
 const Users: React.FC = () => {
+  const handleAddUser = (user: { name: string; email: string; password: string }) => {
+    console.log('Usuário adicionado:', user);
+    // Adicione a lógica para enviar o usuário para a API
+  };
+
   return (
-    <div>
-      <h1>Gestão de Usuários</h1>
-      <UserList />
-      <UserForm />
+    <div className="container">
+      <UserForm onAddUser={handleAddUser} />
     </div>
   );
 };

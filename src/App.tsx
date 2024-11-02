@@ -1,22 +1,31 @@
-// frontend/src/App.tsx
 import React from 'react';
-import { AuthProvider } from './context/AuthContext';
-import Login from './components/Login';
-import Register from './components/Register';
-import ProductForm from './components/ProductForm';
-import ProductList from './components/ProductList';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Home from './pages/Home';
+import Products from './pages/Products';
+import Users from './pages/Users';
 
-const App: React.FC = () => {
+const App = () => {
   return (
-    <AuthProvider>
-      <div>
-        <h1>Stock Management System</h1>
-        <Login />
-        <Register />
-        <ProductForm />
-        <ProductList />
-      </div>
-    </AuthProvider>
+    <Router>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/products">Produtos</Link>
+          </li>
+          <li>
+            <Link to="/users">Usuários</Link>
+          </li>
+        </ul>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/users" element={<Users />} />
+      </Routes>
+    </Router>
   );
 };
 

@@ -1,28 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import api from '../services/api';
+import React from 'react';
+import { User } from '../services/api';
 
-interface User {
-  id: number;
-  nome: string;
-  email: string;
+interface UserListProps {
+  users: User[];
 }
 
-const UserList: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    api.get('/users').then(response => {
-      setUsers(response.data);
-    });
-  }, []);
-
+const UserList: React.FC<UserListProps> = ({ users }) => {
   return (
     <div>
       <h2>Usuários</h2>
       <ul>
         {users.map(user => (
           <li key={user.id}>
-            <strong>{user.nome}</strong>: {user.email}
+            <strong>{user.name}</strong>: {user.email}
           </li>
         ))}
       </ul>

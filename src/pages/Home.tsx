@@ -1,16 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-const Home: React.FC = () => (
-  <div>
-    <h1>Sistema de Estoque</h1>
-    <nav>
-      <ul>
-        <li><Link to="/products">Produtos</Link></li>
-        <li><Link to="/users">Usuários</Link></li>
-      </ul>
-    </nav>
-  </div>
-);
+const Home: React.FC = () => {
+  return (
+    <div className="container">
+      <h1>Bem-vindo ao Sistema de Estoque</h1>
+      <p>Gerencie seus produtos e usuários com facilidade!</p>
+    </div>
+  );
+};
 
 export default Home;

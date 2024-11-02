@@ -1,31 +1,76 @@
-// frontend/src/components/ProductForm.tsx
+// src/components/ProductForm.tsx
 import React, { useState } from 'react';
-import api from '../services/api';
 
-const ProductForm: React.FC = () => {
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+  image?: string;
+}
+
+interface ProductFormProps {
+  onAddProduct: (product: Product) => void;
+}
+
+const ProductForm: React.FC<ProductFormProps> = ({ onAddProduct }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [price, setPrice] = useState<string>('');
+  const [quantity, setQuantity] = useState<string>('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await api.post('/products', { name, description, price, quantity });
-    // Limpar os campos após a adição do produto
+    
+    const newProduct: Product = {
+      id: Date.now(),
+      name,
+      description,
+      price: Number(price),
+      quantity: Number(quantity),
+    };
+
+    onAddProduct(newProduct);
+    
+    // Resetando os campos
     setName('');
     setDescription('');
-    setPrice(0);
-    setQuantity(0);
+    setPrice('');
+    setQuantity('');
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Add Product</h2>
-      <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Product Name" required />
-      <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
-      <input type="number" value={price} onChange={(e) => setPrice(Number(e.target.value))} placeholder="Price" required />
-      <input type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} placeholder="Quantity" required />
-      <button type="submit">Add Product</button>
+      <input
+        type="text"
+        placeholder="Nome"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Descrição"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        required
+      />
+      <input
+        type="number"
+        placeholder="Preço"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+        required
+      />
+      <input
+        type="number"
+        placeholder="Quantidade"
+        value={quantity}
+        onChange={(e) => setQuantity(e.target.value)}
+        required
+      />
+      <button type="submit">Adicionar Produto</button>
     </form>
   );
 };
